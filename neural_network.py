@@ -61,9 +61,6 @@ ranks = df['rank'][:floor(len(df)/2)]
 pairs_list = list(itertools.combinations(range(floor(len(df)/2)), 2))
 random.shuffle(pairs_list)
 
-# define the first half data lists
-dataX_1, dataY_1 = [], []
-
 # define total dataset size
 size = 10000
 
@@ -102,14 +99,14 @@ while True:
     
     i += 1
     
-    if len(dataY_1) >= size:
+    if len(dataY) >= size:
         break
     
 # rescale the data using the fitted scaler
-dataX_1_scaled = scaler.transform(dataX_1)
+dataX_scaled = scaler.transform(dataX)
 
 # split the data into train and test sets
-trainX, testX, trainY, testY = train_test_split(dataX_1, dataY_1, test_size=0.2)
+trainX, testX, trainY, testY = train_test_split(dataX_scaled, dataY, test_size=0.2)
 
 # build the binary classification model
 input_layer = Input(shape=(18,))
