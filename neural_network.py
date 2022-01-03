@@ -150,12 +150,16 @@ m1_2, m2_2, m3_2 = [], [], []
 charge_1, charge_2 = [], []
 trace_1, trace_2 = [], []
 rank_1, rank_2 = [], []
+label_1, label_2 = [], []
 
 # append the second half data lists
 for i in range(len(pairs_list)):
     
     index1 = pairs_list[i][0]
     index2 = pairs_list[i][1]
+    
+    label_1.append(index1)
+    label_2.append(index2)
     
     p1_1.append(p1[index1])
     p1_2.append(p1[index2])
@@ -204,7 +208,7 @@ predictions = [predictions[i][0] for i in range(len(predictions))]
 # define a pandas dataframe to store the results
 results_df = pd.DataFrame({'prediction':predictions,
                            
-                           'label_1':[pairs_list[i][0] for i in range(len(pairs_list))],
+                           'label_1':label_1,
                            'p1_1':p1_1,'p2_1':p2_1,'p3_1':p3_1,
                            'q1_1':q1_1,'q2_1':q2_1,'q3_1':q3_1,
                            'm1_1':m1_1,'m2_1':m2_1,'m3_1':m3_1,
@@ -212,6 +216,7 @@ results_df = pd.DataFrame({'prediction':predictions,
                            'asymptotic_charge_1':charge_1,
                            'rank_1':rank_1,
                            
+                           'label_2':label_2,
                            'p1_2':p1_2,'p2_2':p2_2,'p3_2':p3_2,
                            'q1_2':q1_2,'q2_2':q2_2,'q3_2':q3_2,
                            'm1_2':m1_2,'m2_2':m2_2,'m3_2':m3_2,
