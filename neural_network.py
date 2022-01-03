@@ -10,11 +10,8 @@ from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras.models import Model
 from helpful_functions import matthews_correlation_coefficient
 
-# create file path
-dbfile = '/Users/elliheyes/Documents/PhD/Data/Brane_Webs/3leg_data.db'
-
 # import data
-with sql.connect(dbfile) as db: 
+with sql.connect('3leg_data.db') as db: 
     c = db.cursor()
     df = pd.read_sql_query("SELECT * FROM data", db)
     headings = df.columns.values
