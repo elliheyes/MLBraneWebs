@@ -44,18 +44,18 @@ scaler.fit(data)
 df = df.sample(frac=1).reset_index(drop=True)
 
 # extract the first half of the data
-p1 = df['p1'][:floor(len(df)/2),len(df)]
-p2 = df['p2'][:floor(len(df)/2),len(df)]
-p3 = df['p3'][:floor(len(df)/2),len(df)]
-q1 = df['q1'][:floor(len(df)/2),len(df)]
-q2 = df['q2'][:floor(len(df)/2),len(df)]
-q3 = df['q3'][:floor(len(df)/2),len(df)]
-m1 = df['m1'][:floor(len(df)/2),len(df)]
-m2 = df['m2'][:floor(len(df)/2),len(df)]
-m3 = df['m3'][:floor(len(df)/2),len(df)]
-traces = df['total_monodromy_trace'][:floor(len(df)/2),len(df)]
-charges = df['asymptotic_charge'][:floor(len(df)/2),len(df)]
-ranks = df['rank'][:floor(len(df)/2),len(df)]
+p1 = df['p1'][:floor(len(df)/2)]
+p2 = df['p2'][:floor(len(df)/2)]
+p3 = df['p3'][:floor(len(df)/2)]
+q1 = df['q1'][:floor(len(df)/2)]
+q2 = df['q2'][:floor(len(df)/2)]
+q3 = df['q3'][:floor(len(df)/2)]
+m1 = df['m1'][:floor(len(df)/2)]
+m2 = df['m2'][:floor(len(df)/2)]
+m3 = df['m3'][:floor(len(df)/2)]
+traces = df['total_monodromy_trace'][:floor(len(df)/2)]
+charges = df['asymptotic_charge'][:floor(len(df)/2)]
+ranks = df['rank'][:floor(len(df)/2)]
 
 # create a list of all possible pairs of webs in the first half of the data
 pairs_list = list(itertools.combinations(range(floor(len(df)/2)), 2))
@@ -126,18 +126,18 @@ model.compile(loss="binary_crossentropy", optimizer='adam', metrics=['binary_acc
 history = model.fit(x=np.array(trainX), y=np.array(trainY), validation_data=(np.array(testX), np.array(testY)), epochs=100, batch_size=16)
 
 # extract the second half of the data
-p1 = df['p1'][floor(len(df)/2),len(df):]
-p2 = df['p2'][floor(len(df)/2),len(df):]
-p3 = df['p3'][floor(len(df)/2),len(df):]
-q1 = df['q1'][floor(len(df)/2),len(df):]
-q2 = df['q2'][floor(len(df)/2),len(df):]
-q3 = df['q3'][floor(len(df)/2),len(df):]
-m1 = df['m1'][floor(len(df)/2),len(df):]
-m2 = df['m2'][floor(len(df)/2),len(df):]
-m3 = df['m3'][floor(len(df)/2),len(df):]
-traces = df['total_monodromy_trace'][floor(len(df)/2),len(df):]
-charges = df['asymptotic_charge'][floor(len(df)/2),len(df):]
-ranks = df['rank'][floor(len(df)/2),len(df):]
+p1 = df['p1'][floor(len(df)/2):]
+p2 = df['p2'][floor(len(df)/2):]
+p3 = df['p3'][floor(len(df)/2):]
+q1 = df['q1'][floor(len(df)/2):]
+q2 = df['q2'][floor(len(df)/2):]
+q3 = df['q3'][floor(len(df)/2):]
+m1 = df['m1'][floor(len(df)/2):]
+m2 = df['m2'][floor(len(df)/2):]
+m3 = df['m3'][floor(len(df)/2):]
+traces = df['total_monodromy_trace'][floor(len(df)/2):]
+charges = df['asymptotic_charge'][floor(len(df)/2):]
+ranks = df['rank'][floor(len(df)/2):]
 
 # create a list of all possible pairs of webs in the second half of the data
 pairs_list = list(itertools.combinations(range(floor(len(df)/2)), 2))
