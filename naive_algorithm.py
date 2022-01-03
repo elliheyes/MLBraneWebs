@@ -33,6 +33,9 @@ for i in range(len(pairs_list)):
     index1 = pairs_list[i][0]
     index2 = pairs_list[i][1]
     
+    label_1.append(index1)
+    label_2.append(index2)
+    
     p1_1.append(df['p1'][index1])
     p1_2.append(df['p1'][index2])
     p2_1.append(df['p2'][index1])
