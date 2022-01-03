@@ -223,5 +223,5 @@ results_df = pd.DataFrame({'prediction':predictions,
                            'rank_2':rank_2})
 
 # open a connection to a new database and create a new table in that database for the results
-conn = sql.connect('NN_3leg_results.db')
+conn = sql.connect('NN_results.db')
 results_df.to_sql('data', conn)
