@@ -2,6 +2,7 @@ import csv
 import networkx as nx
 import sqlite3 as sql
 import pandas as pd
+from collections import Counter
 from networkx.algorithms.community import greedy_modularity_communities
 
 # choose method: 'naive' or 'NN'
@@ -67,23 +68,39 @@ web_list = [[webs[clustering[i][j]] for j in range(len(clustering[i]))] for i in
 trace_list = [[traces[clustering[i][j]] for j in range(len(clustering[i]))] for i in range(len(clustering))]
 charge_list = [[charges[clustering[i][j]] for j in range(len(clustering[i]))] for i in range(len(clustering))]
 
+# create a counter for the cluster ranks
+top_rank_list = []
+for i in range(len(rank_list)):
+    c = Counter(rank_list[i])
+    top_rank_list.append(c.most_common()[0][0])
+rank_counter = Counter(top_rank_list)
+
 # export the results
-writefile = open(method+'grouped_ranks.csv', 'w')
+writefile = open(method+'_grouped_ranks.csv', 'w')
 writer = csv.writer(writefile)
 writer.writerows(rank_list)
 writefile.close()
 
-writefile = open(mehthod+'grouped_webs.csv', 'w')
+writefile = open(mehthod+'_grouped_webs.csv', 'w')
 writer = csv.writer(writefile)
 writer.writerows(web_list)
 writefile.close()
 
-writefile = open(method+'grouped_traces.csv', 'w')
+writefile = open(method+'_grouped_traces.csv', 'w')
 writer = csv.writer(writefile)
 writer.writerows(trace_list)
 writefile.close()
 
-writefile = open(method+'grouped_charges.csv', 'w')
+writefile = open(method+'_grouped_charges.csv', 'w')
 writer = csv.writer(writefile)
 writer.writerows(charge_list)
+writefile.close()
+
+writefile = open(method+'_grouping_rank_counter.csv', 'w')
+writer = csv.writer(writefile)
+colnames = ['rank','count']
+writer.writerow(colnames)
+for rank, count in sorted(rank_counter.items()):
+    values = [rank, count]
+    writer.writerow(values)
 writefile.close()
