@@ -1,7 +1,6 @@
 import numpy as np
 import sqlite3 as sql
 import pandas as pd
-import random
 from sklearn.preprocessing import MinMaxScaler
 import itertools
 from math import floor
