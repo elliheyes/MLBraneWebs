@@ -136,9 +136,6 @@ traces = df['total_monodromy_trace'][floor(len(df)/2):].reset_index(drop=True)
 charges = df['asymptotic_charge'][floor(len(df)/2):].reset_index(drop=True)
 ranks = df['rank'][floor(len(df)/2):].reset_index(drop=True)
 
-# create a list of all possible pairs of webs in the second half of the data
-pairs_list = list(itertools.combinations(range(floor(len(df)/2)), 2))
-
 # define second half data lists
 dataX, dataY = [], []
 p1_1, p2_1, p3_1 = [], [], []
@@ -202,7 +199,7 @@ for i in range(len(pairs_list)):
 dataX_scaled = scaler.transform(dataX)
 
 # use the trained network to predict whether or not the web pairs from the second half of the data are equivalent 
-predictions = np.round(np.array(model.predict(np.array(dataX))))
+predictions = np.round(np.array(model.predict(np.array(dataX_scaled))))
 predictions = [predictions[i][0] for i in range(len(predictions))]
 
 # define a pandas dataframe to store the results
