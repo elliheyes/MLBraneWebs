@@ -59,7 +59,6 @@ ranks = df['rank'][:floor(len(df)/2)]
 
 # create a list of all possible pairs of webs in the first half of the data
 pairs_list = list(itertools.combinations(range(floor(len(df)/2)), 2))
-random.shuffle(pairs_list)
 
 # define total dataset size
 size = 10000
