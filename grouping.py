@@ -71,7 +71,7 @@ writer = csv.writer(writefile)
 writer.writerows(rank_list)
 writefile.close()
 
-writefile = open(mehthod+'_grouped_webs.csv', 'w')
+writefile = open(method+'_grouped_webs.csv', 'w')
 writer = csv.writer(writefile)
 writer.writerows(web_list)
 writefile.close()
