@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from itertools import product
 import sqlite3 as sql
-from helpful_functions import gcd, anticlockwise_sort, monodromy
+from data_functions import gcd, anticlockwise_sort, monodromy
 
 # generate sets of web variables p,q and m 
 var_lists = []
