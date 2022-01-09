@@ -10,11 +10,8 @@ import seaborn as sns; sns.set()
 import random
 from network_functions import generate_triplets, embedding_model, complete_model
 
-# create file path
-dbfile = '/Users/elliheyes/Documents/PhD/Data/Brane_Webs/3leg_data_3.db'
-
 # import data
-with sql.connect(dbfile) as db: 
+with sql.connect('3leg_data_3.db') as db: 
     c = db.cursor()
     df = pd.read_sql_query("SELECT * FROM data", db)
     headings = df.columns.values
