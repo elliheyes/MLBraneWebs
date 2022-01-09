@@ -3,17 +3,17 @@ import numpy as np
 from keras import backend as K
 
 def gcd(x,y):
-    ''' compute the greatest common divisor between two integers '''
+    """Compute the greatest common divisor between two integers."""
     while(y):
         x, y = y, x % y
     return x
 
 def monodromy(p,q):
-    ''' compute the anticlockwise monodromy matrix of a (p,q) 7-brane '''
+    """Compute the anticlockwise monodromy matrix of a (p,q) 7-brane."""
     return np.array([[1+p*q,-p**2],[q**2,1-p*q]])
 
 def anticlockwise_angle(x1,x2):
-    ''' compute the anticlockwise angle between x1 and x2  '''
+    """Compute the anticlockwise angle between x1 and x2."""
     x = np.array([x2[0]-x1[0]])
     y = np.array([x2[1]-x1[1]])
     
@@ -32,7 +32,7 @@ def anticlockwise_angle(x1,x2):
             return 360 + np.arctan2(y,x)*180/np.pi
 
 def anticlockwise_sort(var_list):
-    ''' order a set of (p,q) 7-branes anticlockwise '''
+    """Order a set of (p,q) 7-branes anticlockwise."""
     angle1 = anticlockwise_angle((0,0),(var_list[0],var_list[3]))[0]
     angle2 = anticlockwise_angle((0,0),(var_list[1],var_list[4]))[0]
     angle3 = anticlockwise_angle((0,0),(var_list[2],var_list[5]))[0]
