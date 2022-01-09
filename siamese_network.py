@@ -105,7 +105,6 @@ scatter(tsne_embeds, labels)
 
 # create a list of all possible pairs of webs 
 pairs_list = list(itertools.combinations(range(len(df)), 2))
-random.shuffle(pairs_list)
 
 # use the trained model to predict the equivalence of the web pairs
 label_1, label_2 = [], []
