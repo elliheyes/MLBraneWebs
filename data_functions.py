@@ -52,14 +52,3 @@ def anticlockwise_sort(var_list):
     q_list = [var_list[3:6][j] for j in indices]
     
     return p_list + q_list
-
-def matthews_correlation_coefficient(y_true, y_pred):
-    ''' compute the matthews correlation coefficient for a set of predictions '''
-    tp = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
-    tn = K.sum(K.round(K.clip((1 - y_true) * (1 - y_pred), 0, 1)))
-    fp = K.sum(K.round(K.clip((1 - y_true) * y_pred, 0, 1)))
-    fn = K.sum(K.round(K.clip(y_true * (1 - y_pred), 0, 1)))
-
-    num = tp * tn - fp * fn
-    den = (tp + fp) * (tp + fn) * (tn + fp) * (tn + fn)
-    return num / K.sqrt(den + K.epsilon())
