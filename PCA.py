@@ -39,11 +39,12 @@ for i in idx:
     if i not in equiv_groups:
         equiv_groups.append(i)
 
-# save web matrices and web classes to lists and 
-webs, classes = [], [] 
+# save web matrices, classes and ranks to lists
+webs, ranks, classes = [], [], []
 for i in range(len(df)):
     webs.append(np.array([df['p1'][i]*df['m1'][i]]+[df['p2'][i]*df['m2'][i]]+[df['p3'][i]*df['m3'][i]]+
                 [df['q1'][i]*df['m1'][i]]+[df['q2'][i]*df['m2'][i]]+[df['q3'][i]*df['m3'][i]]))
+    ranks.append(df['rank'][i])
     for j in range(len(equiv_groups)):
         if i in equiv_groups[j]:
             classes.append(j)
