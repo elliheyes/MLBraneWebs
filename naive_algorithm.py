@@ -35,7 +35,6 @@ for i in range(len(pairs_list)):
     
     label_1.append(index1)
     label_2.append(index2)
-    
     p1_1.append(df['p1'][index1])
     p1_2.append(df['p1'][index2])
     p2_1.append(df['p2'][index1])
@@ -54,7 +53,6 @@ for i in range(len(pairs_list)):
     m2_2.append(df['m2'][index2])
     m3_1.append(df['m3'][index1])
     m3_2.append(df['m3'][index2])
-    
     trace_1.append(df['total_monodromy_trace'][index1])
     trace_2.append(df['total_monodromy_trace'][index2])
     charge_1.append(df['asymptotic_charge'][index1])
