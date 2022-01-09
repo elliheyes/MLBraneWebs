@@ -20,34 +20,26 @@ del(c,df)
 df = pd.DataFrame(data = data, columns = headings)
 
 # define the list of web labels
-labels = list(range(int(df.iloc[-1]['label_2']+1)))
+labels = list(range(int(max(df['label_2'])+1)))
 
 # construct the lists web matrices, total monodromy traces, asymptotic charges and ranks
-web = [df['p1_1'][0]*df['m1_1'][0]]+[df['p2_1'][0]*df['m2_1'][0]]+[df['p3_1'][0]*df['m3_1'][0]]+[df['q1_1'][0]*df['m1_1'][0]]+[df['q2_1'][0]*df['m2_1'][0]]+[df['q3_1'][0]*df['m3_1'][0]]
-webs = [web]
-
-ranks = [df['rank_1'][0]]
-traces = [df['total_monodromy_trace_1'][0]]
-charges = [df['asymptotic_charge_1'][0]]
-
-index = 0
-
-for i in range(1,len(labels)-1):
-    index = index + len(labels) - i
+webs, ranks, charges, traces = [], [], [], []
+for i in labels[:-1]:
+    index = df[df.label_1==i].first_valid_index()
     
-    web = [df['p1_1'][index]*df['m1_1'][index]]+[df['p2_1'][index]*df['m2_1'][index]]+[df['p3_1'][index]*df['m3_1'][index]]+[df['q1_1'][index]*df['m1_1'][index]]+[df['q2_1'][index]*df['m2_1'][index]]+[df['q3_1'][index]*df['m3_1'][index]]
-    webs.append(web)
-
     ranks.append(df['rank_1'][index])
     traces.append(df['total_monodromy_trace_1'][index])
     charges.append(df['asymptotic_charge_1'][index])
-    
-web = [df.iloc[-1]['p1_2']*df.iloc[-1]['m1_2']]+[df.iloc[-1]['p2_2']*df.iloc[-1]['m2_2']]+[df.iloc[-1]['p3_2']*df.iloc[-1]['m3_2']]+[df.iloc[-1]['q1_2']*df.iloc[-1]['m1_2']]+[df.iloc[-1]['q2_2']*df.iloc[-1]['m2_2']]+[df.iloc[-1]['q3_2']*df.iloc[-1]['m3_2']]
-webs.append(web)
+    webs.append([df['p1_1'][index]*df['m1_1'][index]]+[df['p2_1'][index]*df['m2_1'][index]]+[df['p3_1'][index]*df['m3_1'][index]]+
+                [df['q1_1'][index]*df['m1_1'][index]]+[df['q2_1'][index]*df['m2_1'][index]]+[df['q3_1'][index]*df['m3_1'][index]]) 
 
-ranks.append(df.iloc[-1]['rank_2'])
-traces.append(df.iloc[-1]['total_monodromy_trace_2'])
-charges.append(df.iloc[-1]['asymptotic_charge_2'])
+index = df[df.label_2==labels[-1]].first_valid_index()
+
+ranks.append(df['rank_2'][index])
+traces.append(df['total_monodromy_trace_2'][index])
+charges.append(df['asymptotic_charge_2'][index])
+webs.append([df['p1_2'][index]*df['m1_2'][index]]+[df['p2_2'][index]*df['m2_2'][index]]+[df['p3_2'][index]*df['m3_2'][index]]+
+            [df['q1_2'][index]*df['m1_2'][index]]+[df['q2_2'][index]*df['m2_2'][index]]+[df['q3_2'][index]*df['m3_2'][index]])
 
 # create the graph with webs as nodes and edges if the two webs are predicted equivalent
 G = nx.Graph()
