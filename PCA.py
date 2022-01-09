@@ -77,7 +77,8 @@ for i in range(len(classes)):
     if classes[i] == 0:
         webs_ex.append(webs[i])
         idxs_ex.append(i)
-
+ 
+# save the original pca components corresponding to the example class to a dataframe
 PCA_components_ex_1 = PCA_components.iloc[idxs_ex]
 
 # plot the first two pca components of the example class web data using the original fitted pca 
@@ -90,11 +91,11 @@ plt.ylabel('PCA 2')
 scaler_ex = StandardScaler()
 webs_scaled_ex = scaler.fit_transform(webs_ex)
 
-# create and fit a new pca instance 
+# create and fit a new pca instance with the scaled webs corresponding to the example class
 pca_ex = PCA(n_components=6)
 principal_components_ex = pca_ex.fit_transform(webs_scaled_ex)
 
-# save the pca components to a dataframe
+# save the new pca components to a dataframe
 PCA_components_ex_2 = pd.DataFrame(principal_components_ex)
 
 # plot the first two pca components of the example class web data using the new fitted pca
