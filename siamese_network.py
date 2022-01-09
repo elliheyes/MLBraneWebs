@@ -7,7 +7,6 @@ import pandas as pd
 import itertools
 from sklearn.model_selection import train_test_split
 import seaborn as sns; sns.set()
-import random
 from network_functions import generate_triplets, embedding_model, complete_model
 
 # import data
