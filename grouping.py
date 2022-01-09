@@ -26,7 +26,6 @@ labels = list(range(int(max(df['label_2'])+1)))
 webs, ranks, charges, traces = [], [], [], []
 for i in labels[:-1]:
     index = df[df.label_1==i].first_valid_index()
-    
     ranks.append(df['rank_1'][index])
     traces.append(df['total_monodromy_trace_1'][index])
     charges.append(df['asymptotic_charge_1'][index])
@@ -34,7 +33,6 @@ for i in labels[:-1]:
                 [df['q1_1'][index]*df['m1_1'][index]]+[df['q2_1'][index]*df['m2_1'][index]]+[df['q3_1'][index]*df['m3_1'][index]]) 
 
 index = df[df.label_2==labels[-1]].first_valid_index()
-
 ranks.append(df['rank_2'][index])
 traces.append(df['total_monodromy_trace_2'][index])
 charges.append(df['asymptotic_charge_2'][index])
