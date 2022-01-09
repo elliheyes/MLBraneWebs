@@ -70,36 +70,46 @@ plt.ylabel('PCA 2')
 
 # look at one example class
 
+ex_class = 0
+
 # extract the webs that belong to the class
 idxs_ex = []
 webs_ex = []
 for i in range(len(classes)):
-    if classes[i] == 0:
+    if classes[i] == ex_class:
         webs_ex.append(webs[i])
         idxs_ex.append(i)
- 
-# save the original pca components corresponding to the example class to a dataframe
+        rank = ranks[i]
+        
+# scale the data 
+scaler = StandardScaler()
+webs_ex_scaled = scaler.fit_transform(webs_ex)
+
+# create and fit a new pca instance 
+pca_ex = PCA(n_components=6)
+principal_components_ex = pca_ex.fit_transform(webs_ex_scaled)
+
+# save the pca components to a dataframe
 PCA_components_ex_1 = PCA_components.iloc[idxs_ex]
+PCA_components_ex_2 = pd.DataFrame(principal_components_ex)
 
 # plot the first two pca components of the example class web data using the original fitted pca 
 scatter = plt.scatter(PCA_components_ex_1[0], PCA_components_ex_1[1])
-plt.title('1: ['+str(webs[equiv_groups[0][0]][:3])+','+str(webs[equiv_groups[0][0]][3:])+']')
+plt.title(f"Class {ex_class}"
+          "\n"
+          f"Rank: {rank}"
+          "\n"
+          f"Web: [{webs[equiv_groups[ex_class][0]][:3]},{webs[equiv_groups[ex_class][0]][3:]}]")
 plt.xlabel('PCA 1') 
 plt.ylabel('PCA 2')
-
-# scale the data 
-scaler_ex = StandardScaler()
-webs_scaled_ex = scaler.fit_transform(webs_ex)
-
-# create and fit a new pca instance with the scaled webs corresponding to the example class
-pca_ex = PCA(n_components=6)
-principal_components_ex = pca_ex.fit_transform(webs_scaled_ex)
-
-# save the new pca components to a dataframe
-PCA_components_ex_2 = pd.DataFrame(principal_components_ex)
 
 # plot the first two pca components of the example class web data using the new fitted pca
 scatter = plt.scatter(PCA_components_ex_2[0], PCA_components_ex_2[0])
-plt.title('1: ['+str(webs[equiv_groups[0][0]][:3])+','+str(webs[equiv_groups[0][0]][3:])+']')
+plt.title(f"Class {ex_class}"
+          "\n"
+          f"Rank: {rank}"
+          "\n"
+          f"Web: [{webs[equiv_groups[ex_class][0]][:3]},{webs[equiv_groups[ex_class][0]][3:]}]")
 plt.xlabel('PCA 1') 
 plt.ylabel('PCA 2')
+
