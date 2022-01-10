@@ -71,7 +71,7 @@ plt.ylabel('PCA 2')
 
 # look at one example class
 
-ex_class = 0
+ex_class = 1
 
 # extract the webs that belong to the class
 idxs_ex = []
@@ -106,11 +106,7 @@ plt.ylabel('PCA 2')
 
 # plot the first two pca components of the example class web data using the new fitted pca
 scatter = plt.scatter(PCA_components_ex_2[0], PCA_components_ex_2[0])
-plt.title(f"Class {ex_class}"
-          "\n"
-          f"Rank: {rank}"
-          "\n"
-          f"Web: [{webs[equiv_groups[ex_class][0]][:3]},{webs[equiv_groups[ex_class][0]][3:]}]")
 plt.xlabel('PCA 1') 
 plt.ylabel('PCA 2')
+
 
