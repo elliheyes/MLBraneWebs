@@ -64,7 +64,7 @@ base_model = embedding_model()
 model = complete_model(base_model)
 
 # fit the model using triplet webs provided by the train batch generator
-history = model.fit_generator(train_generator, 
+history = model.fit(train_generator, 
                     validation_data=test_generator, 
                     epochs=100, 
                     verbose=2,steps_per_epoch=20, 
