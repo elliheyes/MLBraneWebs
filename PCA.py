@@ -96,11 +96,6 @@ PCA_components_ex_2 = pd.DataFrame(principal_components_ex)
 
 # plot the first two pca components of the example class web data using the original fitted pca 
 scatter = plt.scatter(PCA_components_ex_1[0], PCA_components_ex_1[1])
-plt.title(f"Class {ex_class}"
-          "\n"
-          f"Rank: {rank}"
-          "\n"
-          f"Web: [{webs[equiv_groups[ex_class][0]][:3]},{webs[equiv_groups[ex_class][0]][3:]}]")
 plt.xlabel('PCA 1') 
 plt.ylabel('PCA 2')
 
