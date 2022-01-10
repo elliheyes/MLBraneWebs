@@ -118,10 +118,6 @@ trace_1, trace_2 = [], []
 charge_1, charge_2 = [], []
 truth = []
 predictions = []
-
-# set the distance limit for predictions 
-limit = 0.001
-
 for i in range(len(pairs_list)):
     index1 = pairs_list[i][0]
     index2 = pairs_list[i][1]
@@ -158,7 +154,7 @@ for i in range(len(pairs_list)):
     
     dist = K.sum(K.square(embedding1-embedding2),axis=1)
     
-    if dist < limit:
+    if dist == 0:
         predictions.append(1)
     else:
         predictions.append(0)
