@@ -165,7 +165,7 @@ for i in range(len(pairs_list)):
         truth.append(0)
 
 # determine the accuracy of predictions
-fp, fn, tp, tn = [], [], [], []
+fp, fn, tp, tn = 0, 0, 0, 0
 for i in range(len(predictions)):
     if predictions[i] == 1:
         if truth[i] == 1:
