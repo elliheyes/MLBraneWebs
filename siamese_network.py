@@ -84,13 +84,22 @@ plt.legend(['train', 'test'], loc='upper right')
 plt.show()
 
 # using the newly trained model compute the embeddings for all webs
-trm = base_model.predict(np.array(webs).reshape(-1,2,3,1))
+embeddings = base_model.predict(np.array(webs).reshape(-1,2,3,1))
+
+# fit kmeans clustering to the embeddings
+kmeans = KMeans(n_clusters=len(equiv_groups), random_state=0).fit(np.array(embeddings))
+
+# get kmeans labels
+kmeans_labels = kmeans.labels_
+
+# determine accuracy of kmeans labels
+rand_score(labels, kmeans_labels)
 
 # TSNE to use dimensionality reduction to visulaise the resultant embeddings
 tsne = TSNE()
-tsne_embeds = tsne.fit_transform(trm)
+tsne_embeds = tsne.fit_transform(embeddings)
 
-# create a scatter plot of all the the embeddings 
+# create a scatter plot of all the the embeddings labeled according to their true class
 def scatter(x, labels, subtitle=None):
     palette = np.array(sns.color_palette("hls", len(equiv_groups)))
     plt.figure(figsize=(8, 8))
@@ -100,118 +109,16 @@ def scatter(x, labels, subtitle=None):
     plt.ylim(-25, 25)
     ax.axis('off')
     ax.axis('tight')
-
 scatter(tsne_embeds, labels)
 
-# create a list of all possible pairs of webs 
-pairs_list = list(itertools.combinations(range(len(df)), 2))
-
-# use the trained model to get an embedding for the web pairs
-label_1, label_2 = [], []
-p1_1, p2_1, p3_1 = [], [], []
-p1_2, p2_2, p3_2 = [], [], []
-q1_1, q2_1, q3_1 = [], [], []
-q1_2, q2_2, q3_2 = [], [], []
-m1_1, m2_1, m3_1 = [], [], []
-m1_2, m2_2, m3_2 = [], [], []
-rank_1, rank_2 = [], []
-trace_1, trace_2 = [], []
-charge_1, charge_2 = [], []
-truth = []
-distances = []
-for i in range(len(pairs_list)):
-    index1 = pairs_list[i][0]
-    index2 = pairs_list[i][1]
-    
-    label_1.append(index1)
-    label_2.append(index2)
-    
-    p1_1.append(df['p1'][index1])
-    p1_2.append(df['p1'][index2])
-    p2_1.append(df['p2'][index1])
-    p2_2.append(df['p2'][index2])
-    p3_1.append(df['p3'][index1])
-    p3_2.append(df['p3'][index2])
-    q1_1.append(df['q1'][index1])
-    q1_2.append(df['q1'][index2])
-    q2_1.append(df['q2'][index1])
-    q2_2.append(df['q2'][index2])
-    q3_1.append(df['q3'][index1])
-    q3_2.append(df['q3'][index2])
-    m1_1.append(df['m1'][index1])
-    m1_2.append(df['m1'][index2])
-    m2_1.append(df['m2'][index1])
-    m2_2.append(df['m2'][index2])
-    m3_1.append(df['m3'][index1])
-    m3_2.append(df['m3'][index2])
-    rank_1.append(df['rank'][index1])
-    rank_2.append(df['rank'][index2])
-    trace_1.append(df['total_monodromy_trace'][index1])
-    trace_2.append(df['total_monodromy_trace'][index2])
-    charge_1.append(df['asymptotic_charge'][index1])
-    charge_2.append(df['asymptotic_charge'][index2])
-    
-    embedding1 = base_model.predict(np.array(webs[index1]).reshape(-1,2,3,1))
-    embedding2 = base_model.predict(np.array(webs[index2]).reshape(-1,2,3,1))
-    
-    distances.append(K.sum(K.square(embedding1-embedding2),axis=1))
-    
-    if (df['total_monodromy_trace'][index1] == df['total_monodromy_trace']labels[index2] and
-        df['asymptotic_charge'][index1] == df['asymptotic_charge']labels[index2] and
-        df['rank'][index1] == df['rank']labels[index2]):
-        truth.append(1)
-    else:
-        truth.append(0)
-
-# determine how many real equivalent pairs there are
-c = Counter(truth)
-N = c[1]
-
-# make predictions by taking the N web pairs with the smallest embedding distances to be equivalent
-idxs = sorted(range(len(distances)), key = lambda sub: distances[sub])[:c[1]]
-predictions = []
-for i in range(len(distances)):
-    if i in idxs:
-        predictions.append(1)
-    else:
-        predictions.append(0)
-  
-# determine the accuracy of predictions
-fp, fn, tp, tn = 0, 0, 0, 0
-for i in range(len(predictions)):
-    if predictions[i] == 1:
-        if truth[i] == 1:
-            tp += 1
-        else:
-            fp += 1
-    else:
-        if truth[i] == 1:
-            fn += 1
-        else:
-            tn += 1
-            
-accuracy = (tp+tn)/len(predictions)
-print('Accuracy: ', accuracy)
-
-# define a pandas dataframe to store the results
-results_df = pd.DataFrame({'prediction':predictions,
-                           
-                           'label_1':label_1,
-                           'p1_1':p1_1,'p2_1':p2_1,'p3_1':p3_1,
-                           'q1_1':q1_1,'q2_1':q2_1,'q3_1':q3_1,
-                           'm1_1':m1_1,'m2_1':m2_1,'m3_1':m3_1,
-                           'total_monodromy_trace_1':trace_1,
-                           'asymptotic_charge_1':charge_1,
-                           'rank_1':rank_1,
-                           
-                           'label_2':label_2,
-                           'p1_2':p1_2,'p2_2':p2_2,'p3_2':p3_2,
-                           'q1_2':q1_2,'q2_2':q2_2,'q3_2':q3_2,
-                           'm1_2':m1_2,'m2_2':m2_2,'m3_2':m3_2,
-                           'total_monodromy_trace_2':trace_2,
-                           'asymptotic_charge_2':charge_2,
-                           'rank_2':rank_2})
-
-# open a connection to a new database and create a new table in that database for the results
-conn = sql.connect('NN_results.db')
-results_df.to_sql('data', conn)
+# create a scatter plot of all the the embeddings labeled according to their kmeans class
+def scatter(x, labels, subtitle=None):
+    palette = np.array(sns.color_palette("hls", len(equiv_groups)))
+    plt.figure(figsize=(8, 8))
+    ax = plt.subplot(aspect='equal')
+    ax.scatter(x[:,0], x[:,1], lw=0,alpha = 0.5, s=40, c=palette[np.array(labels).astype(np.int)] )
+    plt.xlim(-25, 25)
+    plt.ylim(-25, 25)
+    ax.axis('off')
+    ax.axis('tight')
+scatter(tsne_embeds, kmeans_labels)
