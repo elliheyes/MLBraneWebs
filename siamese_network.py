@@ -5,6 +5,7 @@ from sklearn.manifold import TSNE
 import sqlite3 as sql
 import pandas as pd
 import itertools
+from collections import Counter
 from sklearn.model_selection import train_test_split
 import seaborn as sns; sns.set()
 from network_functions import generate_triplets, embedding_model, complete_model
@@ -105,7 +106,7 @@ scatter(tsne_embeds, labels)
 # create a list of all possible pairs of webs 
 pairs_list = list(itertools.combinations(range(len(df)), 2))
 
-# use the trained model to predict the equivalence of the web pairs
+# use the trained model to get an embedding for the web pairs
 label_1, label_2 = [], []
 p1_1, p2_1, p3_1 = [], [], []
 p1_2, p2_2, p3_2 = [], [], []
@@ -117,10 +118,7 @@ rank_1, rank_2 = [], []
 trace_1, trace_2 = [], []
 charge_1, charge_2 = [], []
 truth = []
-predictions = []
-
-limit = ...
-
+distances = []
 for i in range(len(pairs_list)):
     index1 = pairs_list[i][0]
     index2 = pairs_list[i][1]
@@ -156,12 +154,7 @@ for i in range(len(pairs_list)):
     embedding1 = base_model.predict(np.array(webs[index1]).reshape(-1,2,3,1))
     embedding2 = base_model.predict(np.array(webs[index2]).reshape(-1,2,3,1))
     
-    dist = K.sum(K.square(embedding1-embedding2),axis=1)
-    
-    if dist < limit:
-        predictions.append(1)
-    else:
-        predictions.append(0)
+    distances.append(K.sum(K.square(embedding1-embedding2),axis=1))
     
     if (df['total_monodromy_trace'][index1] == df['total_monodromy_trace']labels[index2] and
         df['asymptotic_charge'][index1] == df['asymptotic_charge']labels[index2] and
@@ -170,6 +163,19 @@ for i in range(len(pairs_list)):
     else:
         truth.append(0)
 
+# determine how many real equivalent pairs there are
+c = Counter(truth)
+N = c[1]
+
+# make predictions by taking the N web pairs with the smallest embedding distances to be equivalent
+idxs = sorted(range(len(distances)), key = lambda sub: distances[sub])[:c[1]]
+predictions = []
+for i in range(len(distances)):
+    if i in idxs:
+        predictions.append(1)
+    else:
+        predictions.append(0)
+  
 # determine the accuracy of predictions
 fp, fn, tp, tn = 0, 0, 0, 0
 for i in range(len(predictions)):
