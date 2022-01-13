@@ -118,12 +118,16 @@ trace_1, trace_2 = [], []
 charge_1, charge_2 = [], []
 truth = []
 predictions = []
+
+limit = ...
+
 for i in range(len(pairs_list)):
     index1 = pairs_list[i][0]
     index2 = pairs_list[i][1]
     
     label_1.append(index1)
     label_2.append(index2)
+    
     p1_1.append(df['p1'][index1])
     p1_2.append(df['p1'][index2])
     p2_1.append(df['p2'][index1])
@@ -154,12 +158,14 @@ for i in range(len(pairs_list)):
     
     dist = K.sum(K.square(embedding1-embedding2),axis=1)
     
-    if dist == 0:
+    if dist < limit:
         predictions.append(1)
     else:
         predictions.append(0)
     
-    if labels[index1] == labels[index2]:
+    if (df['total_monodromy_trace'][index1] == df['total_monodromy_trace']labels[index2] and
+        df['asymptotic_charge'][index1] == df['asymptotic_charge']labels[index2] and
+        df['rank'][index1] == df['rank']labels[index2]):
         truth.append(1)
     else:
         truth.append(0)
