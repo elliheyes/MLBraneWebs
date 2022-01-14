@@ -75,13 +75,3 @@ history = model.fit(train_generator,
 
 # save the trained weights.
 model.save_weights('model.hdf5')
-
-# summarize history for loss
-plt.plot(history.history['loss'])
-plt.plot(history.history['val_loss'])
-plt.title('Training and Validation Losses',size = 20)
-plt.ylabel('loss')
-plt.xlabel('epoch')
-plt.legend(['train', 'test'], loc='upper right')
-plt.show()
-
