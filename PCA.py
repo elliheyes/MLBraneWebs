@@ -90,17 +90,9 @@ pca_ex = PCA(n_components=6)
 principal_components_ex = pca_ex.fit_transform(webs_ex_scaled)
 
 # save the pca components to a dataframe
-PCA_components_ex_1 = PCA_components.iloc[idxs_ex]
-PCA_components_ex_2 = pd.DataFrame(principal_components_ex)
-
-# plot the first two pca components of the example class web data using the original fitted pca 
-scatter = plt.scatter(PCA_components_ex_1[0], PCA_components_ex_1[1])
-plt.xlabel('PCA 1') 
-plt.ylabel('PCA 2')
+PCA_components_ex = pd.DataFrame(principal_components_ex)
 
 # plot the first two pca components of the example class web data using the new fitted pca
-scatter = plt.scatter(PCA_components_ex_2[0], PCA_components_ex_2[0])
+scatter = plt.scatter(PCA_components_ex[0], PCA_components_ex[1])
 plt.xlabel('PCA 1') 
 plt.ylabel('PCA 2')
-
-
