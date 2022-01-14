@@ -6,8 +6,8 @@ from data_functions import gcd, anticlockwise_sort, monodromy
 
 # generate sets of web variables p,q and m 
 var_lists = []
-for p1, p2, p3, q1, q2, q3 in product(range(-10,11), repeat=6):
-    for m1, m2, m3 in product(range(1,11), repeat=3):
+for p1, p2, p3, q1, q2, q3 in product(range(-5,6), repeat=6):
+    for m1, m2, m3 in product(range(1,6), repeat=3):
         # only record non trivial webs
         if not(m1 == 0 and m2 == 0 and m3 == 0):
             # check p charge conservation
