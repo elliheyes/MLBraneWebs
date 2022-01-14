@@ -53,6 +53,9 @@ for i in range(len(df)):
         if i in equiv_groups[j]:
             labels.append(j)
 
+# append the dataframe with the class labels 
+df['label'] = labels
+
 # build the model
 base_model = embedding_model()
 model = complete_model(base_model)
@@ -63,6 +66,9 @@ model.load_weights('model.hdf5')
 # use the trained model to generate embeddings for the webs
 embeddings = base_model.predict(np.array(webs).reshape(-1,2,3,1))
 
+# apped the dataframe with the web embeddings
+df['emedding'] = embeddings
+
 # fit kmeans clustering to the embeddings
 kmeans = KMeans(n_clusters=len(equiv_groups), random_state=0).fit(np.array(embeddings))
 
@@ -72,8 +78,7 @@ kmeans_labels = kmeans.labels_
 # determine rand score of kmeans labels 
 print('Rand Score: ', rand_score(labels, kmeans_labels))
 
-# append pandas dataframe with the correct labels and kmeans labels
-df['label'] = labels
+# append the dataframe with the kmeans labels
 df['kmeans_label'] = kmeans_labels
 
 # open a connection to a new database and create a new table in that database for the results
