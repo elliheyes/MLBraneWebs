@@ -66,9 +66,6 @@ model.load_weights('model.hdf5')
 # use the trained model to generate embeddings for the webs
 embeddings = base_model.predict(np.array(webs).reshape(-1,2,3,1))
 
-# apped the dataframe with the web embeddings
-df['emedding'] = embeddings
-
 # fit kmeans clustering to the embeddings
 kmeans = KMeans(n_clusters=len(equiv_groups), random_state=0).fit(np.array(embeddings))
 
