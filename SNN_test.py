@@ -1,12 +1,12 @@
 import numpy as np
-import matplotlib.pyplot as plt
-from sklearn.manifold import TSNE
-from sklearn.cluster import KMeans
-from sklearn.metrics.cluster import rand_score
 import sqlite3 as sql
 import pandas as pd
-import seaborn as sns; sns.set()
 from network_functions import embedding_model, complete_model
+from sklearn.cluster import KMeans
+from sklearn.metrics.cluster import rand_score
+import itertools
+from keras import backend as K
+from sklearn.metrics import matthews_corrcoef, accuracy_score
 
 # create file path
 dbfile = '3leg_data.db'
@@ -28,7 +28,6 @@ df = df.sample(frac=1).reset_index(drop=True)
 # create lists of equivalent webs
 idx = []
 for i in range(len(df)):
-    print('Loop 1: ',i/len(df))
     idx_list = []
     for j in range(len(df)):
         if (df['total_monodromy_trace'][i] == df['total_monodromy_trace'][j] and 
@@ -46,7 +45,6 @@ for i in idx:
 webs = []
 labels = []
 for i in range(len(df)):
-    print('Loop 2: ',i/len(df))
     webs.append([[df['p1'][i]*df['m1'][i],df['p2'][i]*df['m2'][i],df['p3'][i]*df['m3'][i]],
                 [df['q1'][i]*df['m1'][i],df['q2'][i]*df['m2'][i],df['q3'][i]*df['m3'][i]]])
     for j in range(len(equiv_groups)):
@@ -56,11 +54,11 @@ for i in range(len(df)):
 # append the dataframe with the class labels 
 df['label'] = labels
 
-# build the model
+# build model
 base_model = embedding_model()
 model = complete_model(base_model)
 
-# load the saved trained weights.
+# load the saved weights.
 model.load_weights('model.hdf5')
 
 # use the trained model to generate embeddings for the webs
@@ -79,5 +77,37 @@ print('Rand Score: ', rand_score(labels, kmeans_labels))
 df['kmeans_label'] = kmeans_labels
 
 # open a connection to a new database and create a new table in that database for the results
-conn = sql.connect('SNN_results.db')
+conn = sql.connect('SNN_kmeans.db')
 df.to_sql('data', conn)
+
+# generate a list of all pairs of webs
+pairs_list = list(itertools.combinations(range(len(df)), 2))
+
+# determine equivalence predictions of pairs based on their embeddings
+limit = 0.01
+predictions = []
+truth = []
+for i in range(len(pairs_list)):
+    index1 = pairs_list[i][0]
+    index2 = pairs_list[i][1]
+    
+    embedding1 = embeddings[index1]
+    embedding2 = embeddings[index2]
+    
+    distance = K.sum(K.square(embedding1-embedding2))
+    
+    if distance < limit:
+        predictions.append(1)
+    else:
+        predictions.append(0)
+        
+    if (df['total_monodromy_trace'][index1] == df['total_monodromy_trace'][index2] and 
+        df['asymptotic_charge'][index1] == df['asymptotic_charge'][index2] and
+        df['rank'][index1] == df['rank'][index2]):
+        truth.append(1)
+    else:
+        truth.append(0)
+
+# determine the accuracy and MCC score of predictions
+print('Accuracy: ', accuracy_score(truth,predictions))
+print('MCC: ', matthews_corrcoef(truth,predictions))
