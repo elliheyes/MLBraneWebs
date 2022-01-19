@@ -142,11 +142,14 @@ for i in range(5):
     accuracies.append(accuracy_score(truth,predictions))
     mccs.append(matthews_corrcoef(truth,predictions))
 
-# compute the average accuracy and MCC score as well as the standard deviations
+# compute the average scores as well as the standard deviations
 av_acc = np.mean(accuracies)
 av_mcc = np.mean(mccs)
+av_rand = np.mean(rand_scores)
 std_acc = stat.stdev(accuracies)
 std_mcc = stat.stdev(mccs)
+std_rand = stat.stdev(rand_scores)
 
-print('Accuracy: {av_acc} +/- {std_acc}')
-print('MCC: {av_mcc} +/- {std_mcc}')
+print(f'Accuracy: {av_acc} +/- {std_acc}')
+print(f'MCC: {av_mcc} +/- {std_mcc}')
+print(f'Rand Score: {av_rand} +/- {std_rand}')
