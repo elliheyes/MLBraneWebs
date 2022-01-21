@@ -2,12 +2,13 @@ import numpy as np
 import pandas as pd
 from itertools import product
 import sqlite3 as sql
+import csv
 from data_functions import gcd, anticlockwise_sort, monodromy
 
 # generate sets of web variables p,q and m 
 var_lists = []
-for p1, p2, p3, q1, q2, q3 in product(range(-5,6), repeat=6):
-    for m1, m2, m3 in product(range(1,6), repeat=3):
+for p1, p2, p3, q1, q2, q3 in product(range(-10,11), repeat=6):
+    for m1, m2, m3 in product(range(1,11), repeat=3):
         # only record non trivial webs
         if not(m1 == 0 and m2 == 0 and m3 == 0):
             # check p charge conservation
@@ -92,3 +93,35 @@ df = pd.DataFrame({'p1':p1_list,'p2':p2_list,'p3':p3_list,
 # open a connection to a new database and create a new table in that database for the 3 leg web data
 conn = sql.connect('3leg_data.db')
 df.to_sql('data', conn)
+
+# create lists of equivalent webs
+equiv_idx = []
+for i in range(len(rank_list)):
+    idx_list = []
+    for j in range(len(rank_list)):
+        if (rank_list[i] == rank_list[j] and 
+            charge_list[i] == charge_list[j] and 
+            trace_list[i] == trace_list[j]):
+            idx_list.append(j)
+    equiv_idx.append(idx_list)
+
+equiv_groups = []
+for i in equiv_idx:
+    if i not in equiv_groups:
+        equiv_groups.append(i)
+   
+# create a list of inequivalent web matrices
+web_list = []
+for i in range(len(equiv_groups)):
+    web_list.append([[p1_list[equiv_groups[i][0]]*m1_list[equiv_groups[i][0]],
+                 p2_list[equiv_groups[i][0]]*m2_list[equiv_groups[i][0]],
+                 p3_list[equiv_groups[i][0]]*m3_list[equiv_groups[i][0]]],
+                [q1_list[equiv_groups[i][0]]*m1_list[equiv_groups[i][0]],
+                 q2_list[equiv_groups[i][0]]*m2_list[equiv_groups[i][0]],
+                 q3_list[equiv_groups[i][0]]*m3_list[equiv_groups[i][0]]]])
+    
+# export the results to files
+webs_file = open('3leg_data.csv', 'w')
+datawriter = csv.writer(webs_file)
+datawriter.writerows(web_list)
+webs_file.close()
