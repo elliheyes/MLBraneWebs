@@ -11,8 +11,6 @@ from keras import backend as K
 from math import floor
 import statistics as stat
 from sklearn.preprocessing import StandardScaler
-from sklearn.manifold import TSNE
-import matplotlib.pyplot as plt
 
 #%% Data
 
