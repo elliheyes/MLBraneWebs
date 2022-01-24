@@ -132,9 +132,7 @@ for i in range(5):
         else:
             predictions.append(0)
         
-        if (df['total_monodromy_trace'][index1] == df['total_monodromy_trace'][index2] and 
-            df['asymptotic_charge'][index1] == df['asymptotic_charge'][index2] and
-            df['rank'][index1] == df['rank'][index2]):
+        if (y_test[index1] == y_test[index2]):
             truth.append(1)
         else:
             truth.append(0)
@@ -172,5 +170,4 @@ kmeans_labels = kmeans.labels_
 
 # determine rand score of kmeans labels 
 rand_score = rand_score(y_test, kmeans_labels)
-
 print('Rand Score: ', rand_score)
