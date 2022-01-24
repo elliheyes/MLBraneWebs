@@ -15,7 +15,7 @@ from sklearn.preprocessing import StandardScaler
 #%% Data
 
 # create file path
-dbfile = '/Users/elliheyes/Documents/PhD/Data/Brane_Webs/3leg_data.db'
+dbfile = '3leg_data.db'
 
 # import data
 with sql.connect(dbfile) as db: 
