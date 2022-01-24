@@ -1,7 +1,6 @@
 import numpy as np
 import sqlite3 as sql
 import pandas as pd
-import seaborn as sns; sns.set()
 from network_functions import generate_triplets, embedding_model, complete_model
 from sklearn.cluster import KMeans
 from sklearn.metrics.cluster import rand_score
