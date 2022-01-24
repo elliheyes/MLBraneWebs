@@ -15,7 +15,7 @@ from sklearn.preprocessing import StandardScaler
 #%% Data
 
 # create file path
-dbfile = '/Users/elliheyes/Documents/PhD/Data/Brane_Webs/3leg_data_2.db'
+dbfile = '/Users/elliheyes/Documents/PhD/Data/Brane_Webs/3leg_data.db'
 
 # import data
 with sql.connect(dbfile) as db: 
@@ -142,7 +142,7 @@ for i in range(5):
     mccs.append(matthews_corrcoef(truth,predictions))
 
 # save the trained weights.
-model.save_weights('model.hdf5')
+model.save_weights('model_x.hdf5')
 
 #%% Results
 
