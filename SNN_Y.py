@@ -1,6 +1,5 @@
 import numpy as np
 import csv
-import seaborn as sns; sns.set()
 from network_functions import generate_triplets, embedding_model, complete_model
 from sklearn.cluster import KMeans
 from sklearn.metrics.cluster import rand_score
@@ -15,7 +14,7 @@ from sklearn.preprocessing import StandardScaler
 
 # import data
 web_data = []
-with open('/Users/elliheyes/Documents/PhD/Data/Brane_Webs/SL2Z_HW_relabel_W.csv','r') as file:
+with open('SL2Z_HW_relabel_W.csv','r') as file:
     csvreader = csv.reader(file)
     for row in csvreader:
         web_data.append(row)
