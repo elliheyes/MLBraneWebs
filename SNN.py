@@ -175,6 +175,4 @@ kmeans_labels = kmeans.labels_
 # determine rand score of kmeans labels 
 rand_score = rand_score(y_test, kmeans_labels)
 
-# use TSNE to visualise embeddings
-tsne = TSNE(n_components=2).fit_transform(embeddings)
-plt.scatter(tsne[:, 0], tsne[:, 1], c=y_test)
+print('Rand Score: ', rand_score)
