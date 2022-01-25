@@ -32,7 +32,7 @@ def anticlockwise_angle(x1,x2):
             return 360 + np.arctan2(y,x)*180/np.pi
 
 def anticlockwise_sort(var_list):
-    """Order a set of (p,q) 7-branes anticlockwise."""
+    """Order a set of (p,q) 7-branes and 5-brane multiplicities anticlockwise."""
     angle1 = anticlockwise_angle((0,0),(var_list[0],var_list[3]))[0]
     angle2 = anticlockwise_angle((0,0),(var_list[1],var_list[4]))[0]
     angle3 = anticlockwise_angle((0,0),(var_list[2],var_list[5]))[0]
@@ -50,5 +50,6 @@ def anticlockwise_sort(var_list):
 
     p_list = [var_list[:3][j] for j in indices]
     q_list = [var_list[3:6][j] for j in indices]
+    m_list = [var_list[6:][j] for j in indices]
     
-    return p_list + q_list
+    return p_list + q_list + m_list
