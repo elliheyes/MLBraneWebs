@@ -113,12 +113,15 @@ for i in equiv_idx:
 # create a list of inequivalent web matrices
 web_list = []
 for i in range(len(equiv_groups)):
-    web_list.append([[p1_list[equiv_groups[i][0]]*m1_list[equiv_groups[i][0]],
-                 p2_list[equiv_groups[i][0]]*m2_list[equiv_groups[i][0]],
-                 p3_list[equiv_groups[i][0]]*m3_list[equiv_groups[i][0]]],
-                [q1_list[equiv_groups[i][0]]*m1_list[equiv_groups[i][0]],
-                 q2_list[equiv_groups[i][0]]*m2_list[equiv_groups[i][0]],
-                 q3_list[equiv_groups[i][0]]*m3_list[equiv_groups[i][0]]]])
+    web_list.append([p1_list[equiv_groups[i][0]],
+                     p2_list[equiv_groups[i][0]],
+                     p3_list[equiv_groups[i][0]],
+                     q1_list[equiv_groups[i][0]],
+                     q2_list[equiv_groups[i][0]],
+                     q3_list[equiv_groups[i][0]],
+                     m1_list[equiv_groups[i][0]],
+                     m2_list[equiv_groups[i][0]],
+                     m3_list[equiv_groups[i][0]]])
     
 # export the results to files
 webs_file = open('3leg_data.csv', 'w')
