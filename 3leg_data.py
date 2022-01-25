@@ -90,6 +90,9 @@ df = pd.DataFrame({'p1':p1_list,'p2':p2_list,'p3':p3_list,
                    'total_monodromy_trace':trace_list,'asymptotic_charge':charge_list,
                    'rank':rank_list})
 
+# remove duplicates
+df = df.drop_duplicates()
+
 # open a connection to a new database and create a new table in that database for the 3 leg web data
 conn = sql.connect('3leg_data.db')
 df.to_sql('data', conn)
