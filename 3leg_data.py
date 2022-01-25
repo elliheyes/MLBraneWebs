@@ -60,6 +60,9 @@ for i in range(len(var_lists)):
     
         # record the web rank
         rank_list.append((I+2)/2)
+        
+        # define a list for the 7-brane p,q charges and 5-brane multiplicities m ordered anticlockwise
+        var_list = anticlockwise_sort(var_lists[i])
     
         # compute the inidividual monodromies
         M1 = monodromy(var_list[0],var_list[3])
@@ -84,14 +87,41 @@ for i in range(len(var_lists)):
         charge_list.append(abs(gcd2))
 
 # define a pandas dataframe to store the data
-df = pd.DataFrame({'p1':p1_list,'p2':p2_list,'p3':p3_list,
+df1 = pd.DataFrame({'p1':p1_list,'p2':p2_list,'p3':p3_list,
                    'q1':q1_list,'q2':q2_list,'q3':q3_list,
                    'm1':m1_list,'m2':m2_list,'m3':m3_list,
                    'total_monodromy_trace':trace_list,'asymptotic_charge':charge_list,
                    'rank':rank_list})
 
 # remove duplicates
-df = df.drop_duplicates()
+df1 = df1.drop_duplicates()
+
+# define a second and third dataframe where the web matrix columns are cyclically shifted
+df2 = df1 
+df3 = df1
+for i in range(len(df1)):
+    df2.iloc[i]['p1'] = df1.iloc[i]['p2']
+    df2.iloc[i]['p2'] = df1.iloc[i]['p3']
+    df2.iloc[i]['p3'] = df1.iloc[i]['p1']
+    df2.iloc[i]['q1'] = df1.iloc[i]['q2']
+    df2.iloc[i]['q2'] = df1.iloc[i]['q3']
+    df2.iloc[i]['q3'] = df1.iloc[i]['q1']
+    df2.iloc[i]['m1'] = df1.iloc[i]['m2']
+    df2.iloc[i]['m2'] = df1.iloc[i]['m3']
+    df2.iloc[i]['m3'] = df1.iloc[i]['m1']
+    
+    df3.iloc[i]['p1'] = df1.iloc[i]['p3']
+    df3.iloc[i]['p2'] = df1.iloc[i]['p1']
+    df3.iloc[i]['p3'] = df1.iloc[i]['p2']
+    df3.iloc[i]['q1'] = df1.iloc[i]['q3']
+    df3.iloc[i]['q2'] = df1.iloc[i]['q1']
+    df3.iloc[i]['q3'] = df1.iloc[i]['q2']
+    df3.iloc[i]['m1'] = df1.iloc[i]['m3']
+    df3.iloc[i]['m2'] = df1.iloc[i]['m1']
+    df3.iloc[i]['m3'] = df1.iloc[i]['m2']
+    
+# combine the dataframes 
+df = pd.concat([df1, df2, df3], ignore_index = True, axis = 0)
 
 # open a connection to a new database and create a new table in that database for the 3 leg web data
 conn = sql.connect('3leg_data.db')
