@@ -98,7 +98,7 @@ for i in range(5):
     # fit the model using triplet webs provided by the train batch generator
     history = model.fit(train_generator, 
                         validation_data=test_generator, 
-                        epochs=100, 
+                        epochs=50, 
                         steps_per_epoch=1000, 
                         validation_steps=1000,
                         verbose=2)
