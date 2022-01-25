@@ -9,7 +9,6 @@ import itertools
 from keras import backend as K
 from math import floor
 import statistics as stat
-from sklearn.preprocessing import StandardScaler
 
 #%% Data
 
@@ -55,10 +54,6 @@ for i in range(len(df)):
     for j in range(len(equiv_groups)):
         if i in equiv_groups[j]:
             labels.append(j)
-            
-# scale data
-scaler = StandardScaler()
-webs = scaler.fit_transform(webs)
               
 # zip data together 
 data = [[webs[index],labels[index]] for index in range(len(webs))]
