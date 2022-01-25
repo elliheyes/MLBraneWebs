@@ -7,8 +7,8 @@ from data_functions import gcd, anticlockwise_sort, monodromy
 
 # generate sets of web variables p,q and m 
 var_lists = []
-for p1, p2, p3, q1, q2, q3 in product(range(-10,11), repeat=6):
-    for m1, m2, m3 in product(range(1,11), repeat=3):
+for p1, p2, p3, q1, q2, q3 in product(range(-5,6), repeat=6):
+    for m1, m2, m3 in product(range(1,6), repeat=3):
         # only record non trivial webs
         if not(m1 == 0 and m2 == 0 and m3 == 0):
             # check p charge conservation
@@ -28,13 +28,16 @@ q1_list, q2_list, q3_list = [], [], []
 m1_list, m2_list, m3_list = [], [], []
 for i in range(len(var_lists)):
     
+    # define a list for the 7-brane p,q charges and 5-brane multiplicities m ordered anticlockwise
+    var_list = anticlockwise_sort(var_lists[i])
+    
     # define the external leg p,q charges
-    P1 = var_lists[i][0]*var_lists[i][6]
-    P2 = var_lists[i][1]*var_lists[i][7]
-    P3 = var_lists[i][2]*var_lists[i][8]
-    Q1 = var_lists[i][3]*var_lists[i][6]
-    Q2 = var_lists[i][4]*var_lists[i][7]
-    Q3 = var_lists[i][5]*var_lists[i][8]
+    P1 = var_list[0]*var_list[6]
+    P2 = var_list[1]*var_list[7]
+    P3 = var_list[2]*var_list[8]
+    Q1 = var_list[3]*var_list[6]
+    Q2 = var_list[4]*var_list[7]
+    Q3 = var_list[5]*var_list[8]
     
     # compute the SL2Z invariant quantity I
     term1 = abs(P1*Q2-P2*Q1 + P1*Q3-P3*Q1 + P2*Q3-P3*Q2)
@@ -45,21 +48,18 @@ for i in range(len(var_lists)):
     if I >= -2:
         
         # record the variabels
-        p1_list.append(var_lists[i][0])
-        p2_list.append(var_lists[i][1])
-        p3_list.append(var_lists[i][2])
-        q1_list.append(var_lists[i][3])
-        q2_list.append(var_lists[i][4])
-        q3_list.append(var_lists[i][5])
-        m1_list.append(var_lists[i][6])
-        m2_list.append(var_lists[i][7])
-        m3_list.append(var_lists[i][8])
+        p1_list.append(var_list[0])
+        p2_list.append(var_list[1])
+        p3_list.append(var_list[2])
+        q1_list.append(var_list[3])
+        q2_list.append(var_list[4])
+        q3_list.append(var_list[5])
+        m1_list.append(var_list[6])
+        m2_list.append(var_list[7])
+        m3_list.append(var_list[8])
     
         # record the web rank
         rank_list.append((I+2)/2)
-        
-        # define a list for the 7-brane p,q charges ordered anticlockwise
-        var_list = anticlockwise_sort(var_lists[i][:6])
     
         # compute the inidividual monodromies
         M1 = monodromy(var_list[0],var_list[3])
