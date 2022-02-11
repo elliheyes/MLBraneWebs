@@ -49,6 +49,56 @@ history = model.fit(train_generator,
                     validation_steps=1000,
                     verbose=2)
 
-# use the trained model to generate embeddings for the webs
-embeddings = base_model.predict(np.array(X_test).reshape(-1,2,3,1))
+# use the trained model to generate embeddings for the webs in the test set
+test_embeddings = base_model.predict(np.array(X_test).reshape(-1,2,3,1))
+
+# determine equivalence predictions of pairs based on the distance between their embeddings 
+predictions = []
+truth = []
+for i in range(len(pairs_list)):
+    index1 = pairs_list[i][0]
+    index2 = pairs_list[i][1]
+
+    embedding1 = tes_embeddings[index1]
+    embedding2 = test_embeddings[index2]
+    
+    distance = K.sum(K.square(embedding1-embedding2))
+    
+    if distance < 1:
+        predictions.append(1)
+    else:
+        predictions.append(0)
+        
+    if (labels[index1] == labels[index2]):
+        truth.append(1)
+    else:
+        truth.append(0)
+        
+# determine the accuracy and MCC score of predictions
+accuracy = accuracy_score(truth,predictions)
+mcc = matthews_corrcoef(truth,predictions)
+print('Accuracy: ', accuracy)
+print('MCC: ', mcc)
+
+# plot embeddings with classes colour coded
+all_embeddings = base_model.predict(np.array(webs).reshape(-1,2,3,1))
+tsne = TSNE(n_components=2).fit_transform(all_embeddings)
+tsne_x = [tsne[i][0] for i in range(len(tsne))]
+tsne_y = [tsne[i][1] for i in range(len(tsne))]
+palette = np.array(sns.color_palette("hls", len(np.unique(labels))))
+f = plt.figure(figsize=(8, 8))
+ax = plt.subplot(aspect='equal')
+sc = ax.scatter(tsne_x, tsne_y, lw=0, alpha = 0.5, s=40, c=palette[labels])
+plt.xlim(-25, 25)
+plt.ylim(-25, 25)
+ax.axis('off')
+ax.axis('tight')
+
+# fit kmeans clustering to the web embeddings
+kmeans = KMeans(n_clusters=len(np.unique(labels))).fit(all_embeddings)
+kmeans_labels = kmeans.labels_
+
+# get rand index score of kmeans clustering
+kmeans_rand_score = rand_score(labels, kmeans_labels)
+print('K-Means Rand Score: ',kmeans_rand_score)
     
