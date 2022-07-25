@@ -1,7 +1,7 @@
-from keras.models import Model, Sequential
+from tensorflow.keras.models import Model, Sequential
 from tensorflow.keras.optimizers import Adam
-from keras.layers import Dense, Flatten, Convolution2D, Input, Lambda
-from keras import backend as K
+from tensorflow.keras.layers import Dense, Flatten, Convolution2D, Input, Lambda
+from tensorflow.keras import backend as K
 import numpy as np
 
 def get_web(label, X, y):
